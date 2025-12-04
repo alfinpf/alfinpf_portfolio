@@ -80,7 +80,25 @@
     <!-- Hero Section -->
     <section id="hero" class="hero section">
 
-      <img src="./assets/images/image_work.jpeg" alt=" photo" data-aos="fade-in">
+      <!-- <img src="./assets/images/image_work.jpeg" alt=" photo" data-aos="fade-in"> -->
+
+
+      <picture data-aos="fade-in">
+        <!-- Below 576px -->
+        <source media="(max-width: 575.98px)" srcset="./assets/images/cover/img_576.png">
+
+        <!-- Below 768px -->
+        <source media="(max-width: 767.98px)" srcset="./assets/images/cover/img_768.png">
+
+        <!-- Below 992px -->
+        <source media="(max-width: 991.98px)" srcset="./assets/images/cover/img_768.png">
+
+        <!-- Below 1200px -->
+        <source media="(max-width: 1199.98px)" srcset="./assets/images/cover/img_768.png">
+
+        <!-- Default (Above 1200px - High Resolution) -->
+        <img src="./assets/images/cover/img_768.png" class="img-fluid w-100" alt="photo">
+      </picture>
 
       <div class="container text-center" data-aos="zoom-out" data-aos-delay="100">
         <div class="row justify-content-center">
