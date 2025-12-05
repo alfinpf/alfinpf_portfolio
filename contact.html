@@ -29,6 +29,9 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Email js -->
   <script>
     // initialise with your public key
     (function () {
@@ -36,13 +39,6 @@
     })();
   </script>
 
-  <!-- =======================================================
-  * Template Name: Kelly
-  * Template URL: https://bootstrapmade.com/kelly-free-bootstrap-cv-resume-html-template/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="contact-page">
@@ -135,7 +131,6 @@
 
           <div class="col-lg-7">
 
-            <!-- Contact Form starts -->
             <div class="col-lg-12">
               <form id="contact-form" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
 
@@ -151,14 +146,14 @@
                   <div class="col-md-6">
                     <label for="email" class="pb-2">E-mail</label>
                     <input type="email" class="form-control" name="email" id="email" required=""
-                      placeholder="Enter your E-mail ID">
+                      placeholder="Enter your Email ID">
                     <small id="email-error" class="text-danger" style="display:none;"></small>
 
                   </div>
 
                   <div class="col-md-12">
                     <label for="subject" class="pb-2">Subject</label>
-                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Enter subject"
+                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Write the subject"
                       required>
                     <small id="subject-error" class="text-danger" style="display:none;"></small>
 
@@ -167,15 +162,16 @@
                   <div class="col-md-12">
                     <label for="message" class="pb-2">Message</label>
                     <textarea class="form-control" name="message" rows="10" id="message" required
-                      placeholder="Enter your message."></textarea>
+                      placeholder="Enter your message"></textarea>
                     <small id="message-error" class="text-danger" style="display:none;"></small>
+
                   </div>
 
                   <div class="col-md-12 text-center">
                     <div class="loading" style="display:none;">Loading…</div>
                     <div class="error-message" style="display:none;color:red;color: white;"></div>
-                    <div class="sent-message" style="display:none;color:green; color: white;">Your message has been
-                      sent. Thank you!</div>
+                    <div class="sent-message" style="display:none;color:green; color: white;">Your
+                      message has been sent. Thank you!</div>
                     <button type="button" onclick="sendmail()" class="btn mt-3 text-white"
                       style="background-color: #34b7a7;">Send Message</button>
                   </div>
@@ -183,17 +179,106 @@
                 </div>
               </form>
             </div>
-            <!-- End of the Contact Form -->
+
+            <!-- End Contact Form -->
 
           </div>
 
-        </div>
+          <script>
+            function sendmail() {
+              const name = document.getElementById("name-field").value.trim();
+              const email = document.getElementById("email").value.trim();
+              const subject = document.getElementById("subject").value.trim();
+              const message = document.getElementById("message").value.trim();
 
-      </div>
+              const loadingBox = document.querySelector(".loading");
+              const errorBox = document.querySelector(".error-message");
+              const successBox = document.querySelector(".sent-message");
 
-      </div>
+              const nameError = document.getElementById("name-error");
+              const emailError = document.getElementById("email-error");
+              const subjectError = document.getElementById("subject-error");
+              const messageError = document.getElementById("message-error");
 
-    </section><!-- /Contact Section -->
+              // Reset error messages
+              [nameError, emailError, subjectError, messageError].forEach(el => {
+                el.style.display = "none";
+                el.textContent = "";
+              });
+
+              errorBox.style.display = "none";
+              successBox.style.display = "none";
+              loadingBox.style.display = "none";
+
+              let valid = true;
+
+              if (!name) {
+                nameError.textContent = "Please enter your name.";
+                nameError.style.display = "block";
+                valid = false;
+              } else if (!/^[A-Za-z\s]+$/.test(name)) {
+                nameError.textContent = "Please enter a valid name (letters only).";
+                nameError.style.display = "block";
+                valid = false;
+              }
+
+              const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!email) {
+                emailError.textContent = "Please enter your email.";
+                emailError.style.display = "block";
+                valid = false;
+              } else if (!emailPattern.test(email)) {
+                emailError.textContent = "Please enter a valid email.";
+                emailError.style.display = "block";
+                valid = false;
+              }
+
+              if (!subject) {
+                subjectError.textContent = "Please enter a subject.";
+                subjectError.style.display = "block";
+                valid = false;
+              }
+
+              if (!message) {
+                messageError.textContent = "Please enter a message.";
+                messageError.style.display = "block";
+                valid = false;
+              }
+
+              if (!valid) return;
+
+              loadingBox.style.display = "block";
+
+              const params = {
+                from_name: name,
+                from_email: email,
+                reply_to: email,
+                subject: subject,
+                message: message
+              };
+
+              emailjs.send("service_zqcd9a3", "template_po542ok", params, "nVtm4kP6NhopqmQIW")
+                .then((response) => {
+                  console.log("EmailJS success:", response);
+                  loadingBox && (loadingBox.style.display = "none");
+                  successBox && (successBox.style.display = "block");
+                })
+                .catch((err) => {
+                  console.error("EmailJS Error:", err);
+                  loadingBox && (loadingBox.style.display = "none");
+                  errorBox && (errorBox.textContent = "❌ Failed to send. Check console.");
+                  errorBox && (errorBox.style.display = "block");
+                });
+            }
+          </script>
+          <!--<script>
+
+            </div>
+
+            </div>
+
+        </section>
+        <!-- /Contact Section -->
 
   </main>
 
@@ -219,102 +304,12 @@
 
   </footer>
 
-
-
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
-
-  <script>
-    function sendmail() {
-      const name = document.getElementById("name-field").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const subject = document.getElementById("subject").value.trim();
-      const message = document.getElementById("message").value.trim();
-
-      const loadingBox = document.querySelector(".loading");
-      const errorBox = document.querySelector(".error-message");
-      const successBox = document.querySelector(".sent-message");
-
-      const nameError = document.getElementById("name-error");
-      const emailError = document.getElementById("email-error");
-      const subjectError = document.getElementById("subject-error");
-      const messageError = document.getElementById("message-error");
-
-      // Reset error messages
-      [nameError, emailError, subjectError, messageError].forEach(el => {
-        el.style.display = "none";
-        el.textContent = "";
-      });
-
-      errorBox.style.display = "none";
-      successBox.style.display = "none";
-      loadingBox.style.display = "none";
-
-      let valid = true;
-
-      if (!name) {
-        nameError.textContent = "Please enter your name.";
-        nameError.style.display = "block";
-        valid = false;
-      } else if (!/^[A-Za-z\s]+$/.test(name)) {
-        nameError.textContent = "Please enter a valid name (letters only).";
-        nameError.style.display = "block";
-        valid = false;
-      }
-
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!email) {
-        emailError.textContent = "Please enter your email.";
-        emailError.style.display = "block";
-        valid = false;
-      } else if (!emailPattern.test(email)) {
-        emailError.textContent = "Please enter a valid email.";
-        emailError.style.display = "block";
-        valid = false;
-      }
-
-      if (!subject) {
-        subjectError.textContent = "Please enter a subject.";
-        subjectError.style.display = "block";
-        valid = false;
-      }
-
-      if (!message) {
-        messageError.textContent = "Please enter a message.";
-        messageError.style.display = "block";
-        valid = false;
-      }
-
-      if (!valid) return;
-
-      loadingBox.style.display = "block";
-
-      const params = {
-        from_name: name,
-        from_email: email,
-        reply_to: email,
-        subject: subject,
-        message: message
-      };
-
-      emailjs.send("service_zqcd9a3", "template_po542ok", params, "nVtm4kP6NhopqmQIW")
-        .then((response) => {
-          console.log("EmailJS success:", response);
-          loadingBox && (loadingBox.style.display = "none");
-          successBox && (successBox.style.display = "block");
-        })
-        .catch((err) => {
-          console.error("EmailJS Error:", err);
-          loadingBox && (loadingBox.style.display = "none");
-          errorBox && (errorBox.textContent = "❌ Failed to send. Check console.");
-          errorBox && (errorBox.style.display = "block");
-        });
-    }
-  </script>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
